@@ -17,9 +17,22 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const [mounted, setMounted] = useState(false)
+  const [articles, setArticles] = useState([])
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const handleArticleUpdate = (event: CustomEvent) => {
+      setArticles(event.detail)
+    }
+
+    window.addEventListener('articleUpdated', handleArticleUpdate as EventListener)
+    
+    return () => {
+      window.removeEventListener('articleUpdated', handleArticleUpdate as EventListener)
+    }
   }, [])
 
   if (!mounted) {
@@ -37,7 +50,7 @@ export default function RootLayout({
               {children}
             </div>
             <aside className="w-full md:w-1/4 mt-8 md:mt-0">
-              <Timeline />
+              <Timeline articles={articles} />
             </aside>
           </main>
           <BackToTop />

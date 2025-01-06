@@ -8,38 +8,32 @@ interface TimelineEvent {
   title: string
 }
 
-const events: TimelineEvent[] = [
-  { id: 1, date: '2023-06-01', title: 'Published new article' },
-  { id: 2, date: '2023-05-15', title: 'Started a new project' },
-  { id: 3, date: '2023-05-01', title: 'Attended a conference' },
-  // Add more events as needed
-]
+interface TimelineProps {
+  articles: Array<{
+    id: number
+    title: string
+    date: string
+  }>
+}
 
-export const Timeline: React.FC = () => {
+export const Timeline: React.FC<TimelineProps> = ({ articles }) => {
   const [visibleEvents, setVisibleEvents] = useState<TimelineEvent[]>([])
 
   useEffect(() => {
-    const loadMoreEvents = () => {
-      setVisibleEvents((prev) => [
-        ...prev,
-        ...events.slice(prev.length, prev.length + 2),
-      ])
-    }
-
-    loadMoreEvents()
-
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 500
-      ) {
-        loadMoreEvents()
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    // 将文章转换为时间线事件格式
+    const articleEvents = articles.map(article => ({
+      id: article.id,
+      date: article.date,
+      title: `Published: ${article.title}`
+    }))
+    
+    // 按日期排序
+    const sortedEvents = articleEvents.sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
+    
+    setVisibleEvents(sortedEvents)
+  }, [articles])
 
   return (
     <div className="relative hidden md:block">
