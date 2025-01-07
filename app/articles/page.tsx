@@ -82,7 +82,6 @@ export default function ArticlesPage() {
     setTags('')
     setIsDialogOpen(false)
   }
-
   const handleDeleteArticle = (id: number) => {
     setArticleToDelete(id)
     setDeleteDialogOpen(true)

@@ -9,6 +9,9 @@ import { useState, useEffect } from 'react'
 import { BackToTop } from './components/BackToTop'
 import { ReadingProgress } from './components/ReadingProgress'
 
+
+
+
 const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
@@ -22,6 +25,7 @@ export default function RootLayout({
   useEffect(() => {
     setMounted(true)
   }, [])
+
 
   useEffect(() => {
     const handleArticleUpdate = (event: CustomEvent) => {
